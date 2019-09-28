@@ -8,4 +8,5 @@ export const Cell = styled.div`
   color: #0d0d0d;
   margin: 0px;
   padding: 0px;
+  display: inline-block;
 `;
