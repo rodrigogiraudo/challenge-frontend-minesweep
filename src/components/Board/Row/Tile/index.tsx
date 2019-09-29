@@ -2,7 +2,7 @@ import React, { ReactElement, FC } from "react";
 import { Cell, CellContent } from "./_style";
 import { PropsType, TileType } from "./_definitions";
 
-const RenderTile = (tile: TileType) => {
+const RenderTileContent = (tile: TileType) => {
   if (tile.isExplored && !tile.isMine) {
     return (
       <CellContent>{tile.nearbyMines > 0 && tile.nearbyMines}</CellContent>
@@ -18,7 +18,7 @@ const RenderTile = (tile: TileType) => {
 };
 
 const Tile: FC<PropsType> = ({ tile }: PropsType): ReactElement => {
-  return <Cell explored={tile.isExplored}>{RenderTile(tile)}</Cell>;
+  return <Cell explored={tile.isExplored}>{RenderTileContent(tile)}</Cell>;
 };
 
 export default Tile;

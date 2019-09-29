@@ -7,7 +7,7 @@ import Tile from "./Tile";
 const Row: FC<PropsType> = ({ row }: PropsType): ReactElement => {
   return (
     <Line>
-      {row.map((item: TileType, index: number) => <Tile key={index} tile={item} />)}
+      {row.map((item: TileType, index: number) => <Tile key={item.y.toString().concat('-',item.x.toString())} tile={item} />)}
     </Line>
   );
 };

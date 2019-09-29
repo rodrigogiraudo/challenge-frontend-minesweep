@@ -1,10 +1,5 @@
-import { TileType } from './Row/Tile/_definitions';
+import { TileType } from "./Row/Tile/_definitions";
 
 export type PropsType = {
-  rows: number;
-  columns: number;
-  mines: number;
+  board: Array<Array<TileType>>;
 };
-
-export type RowType = Array<TileType>
-export type BoardType = Array<RowType>
