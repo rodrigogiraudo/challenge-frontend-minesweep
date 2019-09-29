@@ -1,12 +1,25 @@
 import styled from "styled-components";
+import { CellProps } from "./_definitions";
 
-export const Cell = styled.div`
-  width: 25px;
-  height: 25px;
-  border: 1px solid #9d9d9d;
-  background-color: #d0d0d0;
+export const Cell = styled.div<CellProps>`
+  width: 16px;
+  height: 16px;
+  background-color: #bdbdbd;
   color: #0d0d0d;
   margin: 0px;
   padding: 0px;
   display: inline-block;
+  border-top: ${({ explored }) => (explored ? "0px" : "3px")} solid #ffffff;
+  border-left: ${({ explored }) => (explored ? "0px" : "3px")} solid #ffffff;
+  border-bottom: ${({ explored }) => (explored ? "0px" : "3px")} solid #7b7b7b;
+  border-right: ${({ explored }) => (explored ? "0px" : "3px")} solid #7b7b7b;
+  font-size: 14px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${({ explored }) => (explored ? "#bdbdbd" : "#8a8a8a")};
+  }
+`;
+
+export const CellContent = styled.span`
+  background: transparent;
 `;
