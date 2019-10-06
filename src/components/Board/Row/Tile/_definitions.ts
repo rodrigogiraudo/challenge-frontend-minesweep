@@ -1,7 +1,8 @@
-
+import { MouseEvent } from 'react';
 export type PropsType = {
   tile: TileType;
   leftClick: (tile: TileType) => void;
+  rightClick: (tile: TileType, e:MouseEvent) => void;
 };
 export interface CellProps {
   explored?: boolean;

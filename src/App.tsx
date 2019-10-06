@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, MouseEvent } from "react";
 import Board from "./components/Board";
 import Controls from "./components/Controls";
 import { AppBody, AppContainer, Game } from "./_style";
@@ -105,16 +105,36 @@ const App: FC<PropsType> = () => {
           return [...row];
         })
       );
-      return;
+      return false;
     }
     //TODO: In this instance is explored with no nearby mines, so it must iterate over itself
+  };
+  const handleRightClick = (tile: TileType, e:MouseEvent) => {
+    e.preventDefault(); 
+    tile.isFlagged ? setFlags(flags + 1) : setFlags(flags - 1);
+    setBoard(
+      board.map((row: TileType[]) => {
+        if (row[0].y === tile.y)
+          return row.map(cell => {
+            if (cell.x === tile.x) return { ...cell, isFlagged: !tile.isFlagged };
+            return cell;
+          });
+        return [...row];
+      })
+    );
   };
   return (
     <AppBody>
       <AppContainer>
         <Game>
           <Controls columns={columns} flags={flags}></Controls>
-          {board && <Board board={board} leftClick={handleLeftClick} />}
+          {board && (
+            <Board
+              board={board}
+              leftClick={handleLeftClick}
+              rightClick={handleRightClick}
+            />
+          )}
         </Game>
       </AppContainer>
     </AppBody>
