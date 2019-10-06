@@ -1,4 +1,6 @@
 import React, { ReactElement, FC } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBomb, faFlag } from '@fortawesome/free-solid-svg-icons'
 import { Cell, CellContent } from "./_style";
 import { PropsType, TileType } from "./_definitions";
 
@@ -9,10 +11,10 @@ const RenderTileContent = (tile: TileType) => {
     );
   }
   if (tile.isFlagged) {
-    return <CellContent>F</CellContent>;
+    return <CellContent><FontAwesomeIcon icon={faFlag} /></CellContent>;
   }
   if (tile.isExplored && tile.isMine) {
-    return <CellContent>B</CellContent>;
+    return <CellContent><FontAwesomeIcon icon={faBomb} /></CellContent>;
   }
   return <CellContent />;
 };
