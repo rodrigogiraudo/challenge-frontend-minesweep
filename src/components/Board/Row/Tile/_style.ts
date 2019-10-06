@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { CellProps } from "./_definitions";
 
 export const Cell = styled.div<CellProps>`
-  width: 16px;
-  height: 16px;
+  width: ${({ explored }) => (explored ? "22px" : "16px")};
+  height: ${({ explored }) => (explored ? "22px" : "16px")};
   background-color: #bdbdbd;
   color: #0d0d0d;
   margin: 0px;
@@ -15,6 +15,7 @@ export const Cell = styled.div<CellProps>`
   border-right: ${({ explored }) => (explored ? "0px" : "3px")} solid #7b7b7b;
   font-size: 14px;
   cursor: pointer;
+  vertical-align: bottom;
   &:hover {
     background-color: ${({ explored }) => (explored ? "#bdbdbd" : "#8a8a8a")};
   }
@@ -22,4 +23,5 @@ export const Cell = styled.div<CellProps>`
 
 export const CellContent = styled.span`
   background: transparent;
+  line-height: 22px;
 `;

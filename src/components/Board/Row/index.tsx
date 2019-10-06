@@ -4,10 +4,10 @@ import { PropsType } from "./_definitions";
 import { TileType } from "./Tile/_definitions";
 import Tile from "./Tile";
 
-const Row: FC<PropsType> = ({ row }: PropsType): ReactElement => {
+const Row: FC<PropsType> = ({ row, leftClick }: PropsType): ReactElement => {
   return (
     <Line>
-      {row.map((item: TileType, index: number) => <Tile key={item.y.toString().concat('-',item.x.toString())} tile={item} />)}
+      {row.map((item: TileType, index: number) => <Tile key={item.y.toString().concat('-',item.x.toString())} tile={item} leftClick={leftClick} />)}
     </Line>
   );
 };

@@ -17,8 +17,8 @@ const RenderTileContent = (tile: TileType) => {
   return <CellContent />;
 };
 
-const Tile: FC<PropsType> = ({ tile }: PropsType): ReactElement => {
-  return <Cell explored={tile.isExplored}>{RenderTileContent(tile)}</Cell>;
+const Tile: FC<PropsType> = ({ tile, leftClick }: PropsType): ReactElement => {
+  return <Cell explored={tile.isExplored} onClick={() => leftClick(tile)}>{RenderTileContent(tile)}</Cell>;
 };
 
 export default Tile;

@@ -1,7 +1,8 @@
 export type PropsType = {
-  columns: number,
+  columns: number;
+  flags: number;
 };
 
-export interface HeaderType{
-  columns: number,
+export interface HeaderType {
+  columns: number;
 }

@@ -11,8 +11,7 @@ export const Header = styled.div<HeaderType>`
   border-right: 3px solid #ffffff;
   margin-bottom: 10px;
   display: flex;
-  align-content: center;
   align-items: center;
   justify-content: space-between;
-  justify-items: center;
+  flex-direction: row;
 `;

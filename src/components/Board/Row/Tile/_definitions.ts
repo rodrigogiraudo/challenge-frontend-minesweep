@@ -1,8 +1,11 @@
+
 export type PropsType = {
   tile: TileType;
+  leftClick: (tile: TileType) => void;
 };
 export interface CellProps {
   explored?: boolean;
+  onClick: (event: any) => void;
 }
 export type TileType = {
   x: number;
