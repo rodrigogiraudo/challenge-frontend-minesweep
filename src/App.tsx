@@ -4,8 +4,6 @@ import Controls from "./components/Controls";
 import { AppBody, AppContainer, Game } from "./_style";
 import { PropsType, BoardType, RowType } from "./_definitions";
 import { TileType } from "./components/Board/Row/Tile/_definitions";
-import Tile from "./components/Board/Row/Tile";
-import { rootCertificates } from "tls";
 
 const App: FC<PropsType> = () => {
   const [rows, setRows] = useState(8);
@@ -109,20 +107,25 @@ const App: FC<PropsType> = () => {
     }
     //TODO: In this instance is explored with no nearby mines, so it must iterate over itself
   };
-  const handleRightClick = (tile: TileType, e:MouseEvent) => {
-    e.preventDefault(); 
+
+  const handleRightClick = (tile: TileType, e: MouseEvent) => {
+    e.preventDefault();
+    if (tile.isExplored) return false;
     tile.isFlagged ? setFlags(flags + 1) : setFlags(flags - 1);
     setBoard(
       board.map((row: TileType[]) => {
         if (row[0].y === tile.y)
           return row.map(cell => {
-            if (cell.x === tile.x) return { ...cell, isFlagged: !tile.isFlagged };
+            if (cell.x === tile.x)
+              return { ...cell, isFlagged: !tile.isFlagged };
             return cell;
           });
         return [...row];
       })
     );
+    return false;
   };
+
   return (
     <AppBody>
       <AppContainer>
