@@ -10,13 +10,17 @@ const App: FC<PropsType> = () => {
   const [columns, setColumns] = useState(10);
   const [mines, setMines] = useState(16);
   const [flags, setFlags] = useState(16);
-  const [board, setBoard] = useState();
+  const [board, setBoard] = useState<BoardType>([]);
   const createBoard = () => {
     //Create empty field
-    let board: BoardType = [];
+    let newBoard: BoardType = [];
+    let tileBag: number[] = [];
+    let count: number = 0;
     for (let row = 0; row < rows; row++) {
       let rowArray: RowType = [];
       for (let column = 0; column < columns; column++) {
+        count++;
+        tileBag.push(count);
         let tile: TileType = {
           x: column,
           y: row,
@@ -27,18 +31,16 @@ const App: FC<PropsType> = () => {
         };
         rowArray.push(tile);
       }
-      board.push(rowArray);
+      newBoard.push(rowArray);
     }
 
-    // Mine the tiles
+    //Populate with Bombs
     for (let k = 0; k < mines; k++) {
-      let newMineRow = Math.floor(Math.random() * rows);
-      let newMineColumn = Math.floor(Math.random() * columns);
-      if (board[newMineRow][newMineColumn].isMine) {
-        k--;
-      } else {
-        board[newMineRow][newMineColumn].isMine = true;
-      }
+      const randomId = Math.floor(Math.random() * tileBag.length);
+      let randomY = Math.trunc(tileBag[randomId] / columns);
+      let randomX = tileBag[randomId] % columns;
+      newBoard[randomY][randomX].isMine = true;
+      tileBag.slice(randomId, 1);
     }
 
     // Calculate Nearby Mines
@@ -57,8 +59,11 @@ const App: FC<PropsType> = () => {
               yPosition < rows
             ) {
               //Sum a mine if it is not itself and the position has a mine
-              if (!(l === 0 && m === 0) && board[yPosition][xPosition].isMine) {
-                board[row][column].nearbyMines++;
+              if (
+                !(l === 0 && m === 0) &&
+                newBoard[yPosition][xPosition].isMine
+              ) {
+                newBoard[row][column].nearbyMines++;
               }
             }
           }
@@ -66,46 +71,68 @@ const App: FC<PropsType> = () => {
       }
     }
 
-    console.table(board);
-    return board;
+    console.table(newBoard);
+    return newBoard;
   };
   useEffect(() => {
     setBoard(createBoard());
   }, []);
 
-  const handleLeftClick = (tile: TileType) => {
-    console.log(tile);
-    if (tile.isFlagged || tile.isExplored) {
-      return;
+  const openTile = (y: number, x: number, editingBoard: TileType[][]) => {
+    const currentTile = editingBoard[y][x];
+    if (currentTile.isFlagged || currentTile.isExplored) {
+      return editingBoard;
     }
-    if (tile.isMine) {
+
+    editingBoard.map((row: TileType[]) => {
+      if (row[0].y === currentTile.y)
+        return row.map(cell => {
+          if (cell.x === currentTile.x) cell.isExplored = true;
+
+          return cell;
+        });
+      return row;
+    });
+
+    if (currentTile.isMine) {
       //TODO: Handle Loose situation
-      setBoard(
-        board.map((row: TileType[]) => {
-          if (row[0].y === tile.y)
-            return row.map(cell => {
-              if (cell.x === tile.x) return { ...cell, isExplored: true };
-              return cell;
-            });
-          return [...row];
-        })
-      );
-      return;
+      return editingBoard;
     }
-    if (tile.nearbyMines > 0) {
-      setBoard(
-        board.map((row: TileType[]) => {
-          if (row[0].y === tile.y)
-            return row.map(cell => {
-              if (cell.x === tile.x) return { ...cell, isExplored: true };
-              return cell;
-            });
-          return [...row];
-        })
-      );
-      return false;
+    if (currentTile.nearbyMines > 0) {
+      //TODO: Regular visit
+      return editingBoard;
     }
-    //TODO: In this instance is explored with no nearby mines, so it must iterate over itself
+
+    if (currentTile.nearbyMines === 0) {
+      for (let row = -1; row <= 1; row++) {
+        for (let col = -1; col <= 1; col++) {
+          if (
+            !(row === 0 && col === 0) && //Validate it is not the current position
+            currentTile.x + col >= 0 && // It is within the board on X
+            currentTile.y + row >= 0 && // It is within the board on Y
+            currentTile.x + col < editingBoard[0].length && // It is within the board on X
+            currentTile.y + row < editingBoard.length && // It is within the board on Y
+            !editingBoard[currentTile.y + row][currentTile.x + col].isExplored // It is not yet explored
+          ) {
+            openTile(currentTile.y + row, currentTile.x + col, editingBoard);
+          }
+        }
+      }
+      return editingBoard;
+    }
+    return editingBoard;
+  };
+
+  const handleLeftClick = (tile: TileType) => {
+    let newBoard = board.map((row: TileType[]) => {
+      row = row.map(cell => {
+        return { ...cell };
+      });
+      return [...row];
+    });
+
+    newBoard = openTile(tile.y, tile.x, newBoard);
+    setBoard(newBoard);
   };
 
   const handleRightClick = (tile: TileType, e: MouseEvent) => {
