@@ -1,1 +1,3 @@
-export type PropsType = {};
+export type PropsType = {
+    time: number
+};

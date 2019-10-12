@@ -5,12 +5,12 @@ import Timer from "./Timer";
 import RemainingMines from "./RemainingMines";
 import Reset from "./Reset";
 
-const Controls: FC<PropsType> = ({ columns, flags }: PropsType): ReactElement => {
+const Controls: FC<PropsType> = ({ columns, flags, time, restart,gameStatus }: PropsType): ReactElement => {
   return (
     <Header columns={columns}>
       <RemainingMines flags={flags}></RemainingMines>
-      <Reset></Reset>
-      <Timer></Timer>
+      <Reset restart={restart} gameStatus={gameStatus}></Reset>
+      <Timer time={time}></Timer>
     </Header>
   );
 };

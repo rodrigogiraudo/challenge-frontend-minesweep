@@ -10,7 +10,7 @@ const openTile = (y: number, x: number, editingBoard: TileType[][]) => {
       return row.map((cell: TileType) => {
         if (cell.x === currentTile.x) {
           cell.isExplored = true;
-          if(cell.isMine) cell.bombDeath = true;
+          if (cell.isMine) cell.bombDeath = true;
         }
         return cell;
       });
@@ -18,7 +18,6 @@ const openTile = (y: number, x: number, editingBoard: TileType[][]) => {
   });
 
   if (currentTile.isMine) {
-    //TODO: Handle Loose situation
     editingBoard.map((row: TileType[]) => {
       row.map((cell: TileType) => {
         if (cell.isMine) cell.isExplored = true;
@@ -26,10 +25,6 @@ const openTile = (y: number, x: number, editingBoard: TileType[][]) => {
       });
       return row;
     });
-    return editingBoard;
-  }
-  if (currentTile.nearbyMines > 0) {
-    //TODO: Regular visit
     return editingBoard;
   }
 
@@ -48,8 +43,10 @@ const openTile = (y: number, x: number, editingBoard: TileType[][]) => {
         }
       }
     }
+
     return editingBoard;
   }
+
   return editingBoard;
 };
 
