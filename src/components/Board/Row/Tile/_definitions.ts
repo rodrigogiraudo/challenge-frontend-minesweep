@@ -6,6 +6,7 @@ export type PropsType = {
 };
 export interface CellProps {
   explored?: boolean;
+  bombDeath?: boolean;
   onClick: (event: any) => void;
 }
 export type TileType = {
@@ -15,4 +16,5 @@ export type TileType = {
   isExplored: boolean;
   isFlagged: boolean;
   isMine: boolean;
+  bombDeath: boolean;
 };

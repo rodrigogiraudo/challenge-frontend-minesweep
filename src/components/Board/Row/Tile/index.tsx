@@ -34,9 +34,10 @@ const Tile: FC<PropsType> = ({
 }: PropsType): ReactElement => {
   return (
     <Cell
+      bombDeath={tile.bombDeath}
       explored={tile.isExplored}
       onClick={() => leftClick(tile)}
-      onContextMenu={(e) => rightClick(tile, e)}
+      onContextMenu={e => rightClick(tile, e)}
     >
       {RenderTileContent(tile)}
     </Cell>
