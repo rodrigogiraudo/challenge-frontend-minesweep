@@ -6,6 +6,7 @@ import {
   faDizzy,
   faGrinStars,
   faSurprise,
+  faSmile,
   IconDefinition
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -15,6 +16,8 @@ const Reset: FC<PropsType> = ({
 }: PropsType): ReactElement => {
   const gameIcon = (status: string): IconDefinition => {
     switch (status) {
+      case "NotInitialized":
+        return faSmile;
       case "Loose":
         return faDizzy;
       case "Won":

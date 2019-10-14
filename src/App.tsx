@@ -1,9 +1,18 @@
 import React, { FC, useState, useEffect, MouseEvent } from "react";
+
+//Styled Componets
+import { AppBody, AppContainer, Game } from "./_style";
+
+//Components
 import Board from "./components/Board";
 import Controls from "./components/Controls";
-import { AppBody, AppContainer, Game } from "./_style";
+import Menu from "./components/Menu";
+
+//Types
 import { PropsType, BoardType } from "./_definitions";
 import { TileType } from "./components/Board/Row/Tile/_definitions";
+
+//Utils
 import createBoard from "./utils/createBoard.util";
 import openTile from "./utils/openTile.util";
 import checkIfWon from "./utils/checkIfWon.util";
@@ -12,8 +21,8 @@ import boardDeepCopy from "./utils/boardDeepCopy.util";
 
 const App: FC<PropsType> = () => {
   const [rows, setRows] = useState(8);
-  const [columns, setColumns] = useState(10);
-  const [mines, setMines] = useState(10);
+  const [columns, setColumns] = useState(9);
+  const [mines, setMines] = useState(9);
   const [flags, setFlags] = useState(10);
   const [board, setBoard] = useState<BoardType>([]);
   const [time, setTime] = useState(0);
@@ -45,8 +54,16 @@ const App: FC<PropsType> = () => {
   };
   const handleRestart = () => {
     setGameStatus("NotInitialized");
+    setFlags(mines);
     setBoard(createBoard(rows, columns, mines));
     resetTimer();
+  };
+
+  const handleOptionsChange = (newRows, newColumns, newMines) => {
+    setRows(newRows);
+    setColumns(newColumns);
+    setMines(newMines);
+    handleRestart();
   };
 
   const handleLooseScenario = () => {
@@ -56,18 +73,22 @@ const App: FC<PropsType> = () => {
   const handleWinScenario = (newBoard: BoardType) => {
     stopTimer();
     setGameStatus("Won");
+    setFlags(0);
     setBoard(setWonBoard(newBoard));
   };
   const handleLeftClick = (tile: TileType) => {
-    if (!isOn) {
-      setGameStatus("Playing");
-      startTimer();
-    }
-    let newBoard = openTile(tile.y, tile.x, boardDeepCopy(board));
-    newBoard[tile.y][tile.x].bombDeath && handleLooseScenario();
-    checkIfWon(newBoard, mines)
-      ? handleWinScenario(newBoard)
-      : setBoard(newBoard);
+    if(gameStatus !== "Won" && gameStatus !== "Loose"){
+      if (!isOn) {
+        setGameStatus("Playing");
+        startTimer();
+      }
+      let newBoard = openTile(tile.y, tile.x, boardDeepCopy(board));
+      newBoard[tile.y][tile.x].bombDeath && handleLooseScenario();
+      checkIfWon(newBoard, mines)
+        ? handleWinScenario(newBoard)
+        : setBoard(newBoard);
+    };
+    return
   };
 
   const handleRightClick = (tile: TileType, e: MouseEvent) => {
@@ -83,6 +104,7 @@ const App: FC<PropsType> = () => {
   return (
     <AppBody>
       <AppContainer>
+      <Menu columns={columns} rows={rows} mines={mines} newGame={handleRestart} saveOptions={handleOptionsChange}/>
         <Game>
           <Controls
             columns={columns}
