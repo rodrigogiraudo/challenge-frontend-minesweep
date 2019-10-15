@@ -10,4 +10,5 @@ export const Container = styled.div`
   align-items: center;
   flex-direction: row-reverse;
   justify-content: right;
+  font-size: 21px;
 `;

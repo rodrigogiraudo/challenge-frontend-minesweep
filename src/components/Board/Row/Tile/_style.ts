@@ -4,7 +4,7 @@ import { CellProps } from "./_definitions";
 export const Cell = styled.div<CellProps>`
   width: ${({ explored }) => (explored ? "22px" : "16px")};
   height: ${({ explored }) => (explored ? "22px" : "16px")};
-  background-color:${({ bombDeath }) => (bombDeath ? "#ff0000" : "#bdbdbd")}  ;
+  background-color: ${({ bombDeath }) => (bombDeath ? "#ff0000" : "#bdbdbd")};
   color: #0d0d0d;
   margin: 0px;
   padding: 0px;
@@ -17,11 +17,17 @@ export const Cell = styled.div<CellProps>`
   cursor: pointer;
   vertical-align: bottom;
   &:hover {
-    background-color: ${({ explored }) => (explored ? "#bdbdbd" : "#8a8a8a")};
+    background-color: ${({ explored, bombDeath }) =>
+      !explored ? "#8a8a8a" : !bombDeath ? "#bdbdbd" : "#ff0000"};
   }
 `;
 
 export const CellContent = styled.span`
   background: transparent;
   line-height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 `;
