@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { HeaderType } from "./_definitions";
+import { HeaderType, ErrorMessageType } from "./_definitions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Header = styled.div<HeaderType>`
@@ -22,6 +22,13 @@ export const InputContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: left;
+  > label { 
+    width: 75px;
+    text-align: left;
+   }; 
+  > input { 
+    flex: 1
+   }; 
 `;
 
 export const DropdownTitle = styled.span`
@@ -71,4 +78,13 @@ export const Close = styled.a`
 `;
 export const PopupContainer = styled.div`
   padding: 10px;
+`;
+export const ErrorMessage = styled.div<ErrorMessageType>`
+  display: ${({ hasError }) => (hasError ? "block" : "none")};
+  padding: 10px;
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 800;
 `;
