@@ -9,3 +9,6 @@ export type PropsType = {
 export interface HeaderType {
   columns: number;
 }
+export interface ErrorMessageType {
+  hasError: boolean;
+}
