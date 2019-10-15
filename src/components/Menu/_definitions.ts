@@ -3,7 +3,7 @@ export type PropsType = {
   rows: number;
   mines: number;
   newGame: () => void;
-  saveOptions: () => void;
+  saveOptions: (newRows: number, newColumns: number, newMines: number) => void;
 };
 
 export interface HeaderType {

@@ -39,9 +39,11 @@ const App: FC<PropsType> = () => {
   const startTimer = () => {
     setOn(true);
     start = Date.now();
-    setTimer(setInterval(() => {
-      setTime(Date.now() - start);
-    }, 1000));
+    setTimer(
+      setInterval(() => {
+        setTime(Date.now() - start);
+      }, 1000)
+    );
   };
   const stopTimer = () => {
     setOn(false);
@@ -59,11 +61,18 @@ const App: FC<PropsType> = () => {
     resetTimer();
   };
 
-  const handleOptionsChange = (newRows, newColumns, newMines) => {
+  const handleOptionsChange = (
+    newRows: number,
+    newColumns: number,
+    newMines: number
+  ) => {
     setRows(newRows);
     setColumns(newColumns);
     setMines(newMines);
-    handleRestart();
+    setGameStatus("NotInitialized");
+    setFlags(newMines);
+    setBoard(createBoard(newRows, newColumns, newMines));
+    resetTimer();
   };
 
   const handleLooseScenario = () => {
@@ -77,7 +86,7 @@ const App: FC<PropsType> = () => {
     setBoard(setWonBoard(newBoard));
   };
   const handleLeftClick = (tile: TileType) => {
-    if(gameStatus !== "Won" && gameStatus !== "Loose"){
+    if (gameStatus !== "Won" && gameStatus !== "Loose") {
       if (!isOn) {
         setGameStatus("Playing");
         startTimer();
@@ -87,8 +96,8 @@ const App: FC<PropsType> = () => {
       checkIfWon(newBoard, mines)
         ? handleWinScenario(newBoard)
         : setBoard(newBoard);
-    };
-    return
+    }
+    return;
   };
 
   const handleRightClick = (tile: TileType, e: MouseEvent) => {
@@ -104,7 +113,13 @@ const App: FC<PropsType> = () => {
   return (
     <AppBody>
       <AppContainer>
-      <Menu columns={columns} rows={rows} mines={mines} newGame={handleRestart} saveOptions={handleOptionsChange}/>
+        <Menu
+          columns={columns}
+          rows={rows}
+          mines={mines}
+          newGame={handleRestart}
+          saveOptions={handleOptionsChange}
+        />
         <Game>
           <Controls
             columns={columns}

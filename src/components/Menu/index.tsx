@@ -36,11 +36,12 @@ const Menu: FC<PropsType> = ({ mines, rows, columns, newGame,saveOptions }: Prop
     setShowModal(false);
   };
 const handleSubmit = () =>{
-  if (mines > (columns * row)){
+  if (mines > (columns * rows)){
     //TODO: Show Error
     return false;
   }
-  saveOptions(newRow, newColumns, newMines);
+  saveOptions(newRows, newColumns, newMines);
+  closeModal();
 }
   return (
     <Header columns={columns}>
@@ -72,7 +73,7 @@ const handleSubmit = () =>{
               <input name="mines" min="0" max="99" type="number" placeholder="Insert amount of mines..." value={newMines} onChange={(event)=>setNewMines(parseInt(event.target.value))}/>
             </InputContainer>
             <InputContainer>
-              <button type="button" name="save" value="Save" onClick={handleSubmit}/>
+              <button type="button" name="save" value="Save" onClick={handleSubmit}>Save</button>
             </InputContainer>
           </div>
         </PopupContainer>
