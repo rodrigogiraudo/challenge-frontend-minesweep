@@ -75,6 +75,12 @@ const App: FC<PropsType> = () => {
     resetTimer();
   };
 
+  const handleStartScenario = () => {
+    if (!isOn) {
+      setGameStatus("Playing");
+      startTimer();
+    }
+  };
   const handleLooseScenario = () => {
     stopTimer();
     setGameStatus("Loose");
@@ -87,12 +93,11 @@ const App: FC<PropsType> = () => {
   };
   const handleLeftClick = (tile: TileType) => {
     if (gameStatus !== "Won" && gameStatus !== "Loose") {
-      if (!isOn) {
-        setGameStatus("Playing");
-        startTimer();
-      }
       let newBoard = openTile(tile.y, tile.x, boardDeepCopy(board));
-      newBoard[tile.y][tile.x].bombDeath && handleLooseScenario();
+      newBoard[tile.y][tile.x].bombDeath
+        ? handleLooseScenario()
+        : handleStartScenario();
+
       checkIfWon(newBoard, mines)
         ? handleWinScenario(newBoard)
         : setBoard(newBoard);
