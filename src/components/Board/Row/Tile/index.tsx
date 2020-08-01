@@ -30,14 +30,15 @@ const RenderTileContent = (tile: TileType) => {
 const Tile: FC<PropsType> = ({
   tile,
   leftClick,
-  rightClick
+  rightClick,
 }: PropsType): ReactElement => {
   return (
     <Cell
+      id={tile.y.toString().concat("-", tile.x.toString())}
       bombDeath={tile.bombDeath}
       explored={tile.isExplored}
       onClick={() => leftClick(tile)}
-      onContextMenu={e => rightClick(tile, e)}
+      onContextMenu={(e) => rightClick(tile, e)}
     >
       {RenderTileContent(tile)}
     </Cell>
