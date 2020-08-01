@@ -94,11 +94,10 @@ const App: FC<PropsType> = () => {
   const handleLeftClick = (tile: TileType) => {
     if (gameStatus !== "Won" && gameStatus !== "Loose") {
       let newBoard = openTile(tile.y, tile.x, boardDeepCopy(board));
-      if (newBoard[tile.y][tile.x].bombDeath) {
-        handleLooseScenario();
-      } else {
-        handleStartScenario();
-      }
+      newBoard[tile.y][tile.x].bombDeath
+        ? handleLooseScenario()
+        : handleStartScenario();
+
       checkIfWon(newBoard, mines)
         ? handleWinScenario(newBoard)
         : setBoard(newBoard);
