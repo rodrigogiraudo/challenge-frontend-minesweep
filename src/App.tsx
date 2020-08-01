@@ -92,17 +92,21 @@ const App: FC<PropsType> = () => {
     setBoard(setWonBoard(newBoard));
   };
   const handleLeftClick = (tile: TileType) => {
-    if (gameStatus !== "Won" && gameStatus !== "Loose") {
-      let newBoard = openTile(tile.y, tile.x, boardDeepCopy(board));
-      newBoard[tile.y][tile.x].bombDeath
-        ? handleLooseScenario()
-        : handleStartScenario();
+    if (board[tile.y][tile.x].isMine && !isOn) {
+      handleRestart();
+      //TODO: Trigger click in same tile when restarted
+    } else {
+      if (gameStatus !== "Won" && gameStatus !== "Loose") {
+        let newBoard = openTile(tile.y, tile.x, boardDeepCopy(board));
+        newBoard[tile.y][tile.x].bombDeath
+          ? handleLooseScenario()
+          : handleStartScenario();
 
-      checkIfWon(newBoard, mines)
-        ? handleWinScenario(newBoard)
-        : setBoard(newBoard);
+        checkIfWon(newBoard, mines)
+          ? handleWinScenario(newBoard)
+          : setBoard(newBoard);
+      }
     }
-    return;
   };
 
   const handleRightClick = (tile: TileType, e: MouseEvent) => {
