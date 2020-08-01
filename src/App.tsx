@@ -42,7 +42,6 @@ const App: FC<PropsType> = () => {
     setTimer(
       setInterval(() => {
         setTime(Date.now() - start);
-        console.log(timer);
       }, 1000)
     );
   };
