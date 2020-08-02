@@ -14,7 +14,7 @@ import {
   PopupContainer,
   Icon,
   ErrorMessage,
-  Close
+  Close,
 } from "./_style";
 
 const Menu: FC<PropsType> = ({
@@ -22,7 +22,7 @@ const Menu: FC<PropsType> = ({
   rows,
   columns,
   newGame,
-  saveOptions
+  saveOptions,
 }: PropsType): ReactElement => {
   const [showModal, setShowModal] = useState(false);
   const [newRows, setNewRows] = useState(0);
@@ -30,6 +30,8 @@ const Menu: FC<PropsType> = ({
   const [newMines, setNewMines] = useState(0);
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isCustom, setIsCustom] = useState(false);
+  const [selectedOption, setOption] = useState("");
 
   useEffect(() => {
     setNewRows(rows);
@@ -49,7 +51,7 @@ const Menu: FC<PropsType> = ({
       setErrorMessage("Amount of mines must be less than rows * columns");
       return false;
     }
-    if(newMines>=100 || newColumns >= 100){
+    if (newMines >= 100 || newColumns >= 100) {
       setHasError(true);
       setErrorMessage("Max number of columns and / or rows is 100");
       return false;
@@ -59,6 +61,32 @@ const Menu: FC<PropsType> = ({
     saveOptions(newRows, newColumns, newMines);
     closeModal();
   };
+  const onValueChange = (event: any) => {
+    setOption(event.target.value);
+    setIsCustom(event.target.value === "Custom");
+    switch (event.target.value) {
+      case "Moderate":
+        setNewColumns(16);
+        setNewRows(16);
+        setNewMines(40);
+        break;
+
+      case "Hard":
+        setNewColumns(30);
+        setNewRows(16);
+        setNewMines(99);
+        break;
+
+      case "Easy":
+      case "Custom":
+      default:
+        setNewColumns(9);
+        setNewRows(9);
+        setNewMines(10);
+        break;
+    }
+  };
+
   return (
     <Header columns={columns}>
       <Dropdown>
@@ -75,6 +103,50 @@ const Menu: FC<PropsType> = ({
           <Close className="close" onClick={closeModal}>
             <Icon icon={faTimesCircle} />
           </Close>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                value="Easy"
+                checked={selectedOption === "Easy"}
+                onChange={onValueChange}
+              />
+              East
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                value="Moderate"
+                checked={selectedOption === "Moderate"}
+                onChange={onValueChange}
+              />
+              Moderate
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                value="Hard"
+                checked={selectedOption === "Hard"}
+                onChange={onValueChange}
+              />
+              Hard
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                value="Custom"
+                checked={selectedOption === "Custom"}
+                onChange={onValueChange}
+              />
+              Custom
+            </label>
+          </div>
           <div>
             <InputContainer>
               <label>Columns </label>
@@ -83,9 +155,12 @@ const Menu: FC<PropsType> = ({
                 min="0"
                 max="99"
                 type="number"
+                disabled={!isCustom}
                 placeholder="Insert amount of columns..."
                 value={newColumns}
-                onChange={event => setNewColumns(parseInt(event.target.value))}
+                onChange={(event) =>
+                  setNewColumns(parseInt(event.target.value))
+                }
               />
             </InputContainer>
             <InputContainer>
@@ -95,9 +170,10 @@ const Menu: FC<PropsType> = ({
                 min="0"
                 max="99"
                 type="number"
+                disabled={!isCustom}
                 placeholder="Insert amount of rows..."
                 value={newRows}
-                onChange={event => setNewRows(parseInt(event.target.value))}
+                onChange={(event) => setNewRows(parseInt(event.target.value))}
               />
             </InputContainer>
             <InputContainer>
@@ -107,9 +183,10 @@ const Menu: FC<PropsType> = ({
                 min="0"
                 max="99"
                 type="number"
+                disabled={!isCustom}
                 placeholder="Insert amount of mines..."
                 value={newMines}
-                onChange={event => setNewMines(parseInt(event.target.value))}
+                onChange={(event) => setNewMines(parseInt(event.target.value))}
               />
             </InputContainer>
             <InputContainer>

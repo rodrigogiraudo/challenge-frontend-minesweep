@@ -20,9 +20,9 @@ import setWonBoard from "./utils/setWonBoard.util";
 import boardDeepCopy from "./utils/boardDeepCopy.util";
 
 const App: FC<PropsType> = () => {
-  const [rows, setRows] = useState(8);
+  const [rows, setRows] = useState(9);
   const [columns, setColumns] = useState(9);
-  const [mines, setMines] = useState(9);
+  const [mines, setMines] = useState(10);
   const [flags, setFlags] = useState(10);
   const [board, setBoard] = useState<BoardType>([]);
   const [time, setTime] = useState(0);
